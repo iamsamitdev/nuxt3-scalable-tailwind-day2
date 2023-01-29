@@ -1,0 +1,920 @@
+Nuxt 3 Advanced Online Course 21-01-2023
++++++++++++++++++++++++++++++++++
+| Day 1
+| Nuxt3 Tailwind CSS for scalable project
++++++++++++++++++++++++++++++++++
+Step 1: สร้างโปรเจ็กต์ใหม่ด้วย Nuxt 3
+---
+npx nuxi init nuxt3-scalable-tailwind
+
+Step 2: เปิดเข้า VSCode
+---
+code nuxt3-scalable-tailwind -r
+
+Step 3: ติดตั้ง Dependencies (node_module)
+---
+npm install
+
+Step 4: ทดสอบรันโปรเจ็กต์ dev mode
+---
+npm run dev
+
+Step 5: ติดตั้ง Tailwind CSS
+---
+npm install -D tailwindcss postcss autoprefixer
+
+Step 6: สร้างไฟล์ tailwind config
+---
+npx tailwindcss init
+
+Step 7: Add Tailwind to your PostCSS configuration in nuxt.config.js
+---
+postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
+    },
+  },
+
+Step 8: Configure your template paths
+---
+mode: 'jit',
+content: [
+    "./components/**/*.{js,vue,ts}",
+    "./layouts/**/*.vue",
+    "./pages/**/*.vue",
+    "./plugins/**/*.{js,ts}",
+    "./nuxt.config.{js,ts}",
+    "./app.vue",
+  ],
+
+Step 9: Add the Tailwind directives to your CSS
+---
+สร้างไฟล์ main.css ไว้ในโฟลเดอร์ ./assets/css/tailwind.css
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+Step 10: Add the CSS file globally in file nuxt.config.js
+---
+css: ['~/assets/css/tailwind.css'],
+
+ทดสอบเรียกใช้ Tailwind ที่ไฟล์ app.vue
+---
+<div class="flex justify-center items-center h-screen">
+    <h1 class="text-3xl font-bold text-purple-600 animate-bounce">
+      Hello Nuxt 3
+    </h1>
+</div>
+
+รันโปรเจ็กต์ทดสอบ
+---
+npm run dev
+
+Step 11: ติดตั้ง @nuxtjs/robots
+---
+npm install @nuxtjs/robots -D
+
+Config nuxt.config.ts for Meta SEO Tag
+---
+modules: [
+      [
+        // Nuxt Robots
+        '@nuxtjs/robots',
+        {
+          UserAgent: "*",
+          Disallow: "",
+        }
+      ],
+    ]
+
+and 
+
+app: {
+        head: {
+            htmlAttrs: {
+                lang: 'en'
+            },
+            bodyAttrs: {
+                class: 'demo'
+            },
+            charset: 'utf-8',
+            titleTemplate: '%s | IT Genius Engineering',
+            meta: [
+                {
+                    name: 'author',
+                    content: 'IT Genius Engineering Ltd., Thailand'
+                },
+                {
+                    name: 'viewport',
+                    content: 'width=device-width, initial-scale=1, maximum-scale=5'
+                }
+            ]
+        }
+    },
+
+Then test use title in app.vue
+---
+<script lang="ts" setup>
+  useHead({
+    title: 'Home',
+    meta: [
+      { 
+        name: 'description', 
+        content: 'Home Nuxt 3, IT Genius Engineering' 
+      },
+      {
+        name: 'keywords',
+        content: 'Home, Nuxt 3, Learning Nuxt 3'
+      },
+    ],
+  })
+</script>
+
+หมายเหตุ
+---
+หากทดสอบ Lighthouse วัดประสิทธิภาพของเว็บตอนนี้น่าจะได้ 100/100/100/100 แล้ว
+
+
+Step 12: ติดตั้ง Modules Nuxt-icon
+---
+npm install --save-dev nuxt-icon
+
+จากนั้นทำการ config ที่ไฟล์ nuxt.config.ts
+---
+modules: [
+      'nuxt-icon'
+],
+
+ทดสอบเรียกใช้ icon ที่ไฟล์ app.vue
+---
+<Icon name="icon-park:home-two"></Icon>
+
+Step 13: การสร้าง Components
+---
+npx nuxi add component App/Header
+
+<script lang="ts" setup></script>
+<template>
+  <nav class="bg-gray-900 text-white py-5 border-b border-gray-700">
+    <div class="container flex flex-col sm:flex-row justify-center gap-3 sm:gap-0 sm:justify-between items-center">
+      <NuxtLink to="/"
+        class="text-2xl font-medium">Nuxt 3 Blog</NuxtLink>
+      <ul class="nav">
+        <li>
+          <NuxtLink to="/">Home</NuxtLink>
+        </li>
+        <li>
+          <NuxtLink to="/categories">Categories</NuxtLink>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</template>
+
+<style>
+ul.nav {
+  @apply flex gap-5 items-center justify-end;
+}
+
+ul.nav>li>a {
+  @apply text-gray-300 hover: text-gray-50;
+}
+
+ul.nav>li>a.router-link-active {
+  @apply text-primary-400;
+}
+</style>
+
+npx nuxi add component App/Footer
+
+<script lang="ts" setup></script>
+
+<template>
+  <footer class="px-4 sm:px-0 bg-gray-800 text-white">
+    <div
+      class="container py-4 mx-auto flex flex-col sm:flex-row justify-between gap-2 sm:items-center"
+    >
+      <a href="#" class="font-semibold text-lg text-white">Nuxt Tailwind</a>
+      <div class="text-sm">
+        Nuxt Tailwind by
+        <a
+          href="#"
+          class="font-semibold text-white"
+        >
+          IT Genius
+        </a>
+        . All rights reserved
+      </div>
+    </div>
+  </footer>
+</template>
+
+<style scoped></style>
+
+
+Step 14: การสร้าง Layouts
+---
+npx nuxi add layout default
+
+<script lang="ts" setup></script>
+
+<template>
+  <div>
+
+    <AppHeader />
+    
+    <div class="container mx-auto px-4 sm:px-0 py-4">
+      <slot />
+    </div>
+
+    <AppFooter />
+
+  </div>
+</template>
+
+<style scoped></style>
+
+Step 15: การสร้าง Pages
+---
+npx nuxi add page index
+
+
+<script lang="ts" setup>
+  useHead({
+    title: 'Home',
+    meta: [
+      { 
+        name: 'description', 
+        content: 'Home Nuxt 3, IT Genius Engineering' 
+      },
+      {
+        name: 'keywords',
+        content: 'Home, Nuxt 3, Learning Nuxt 3'
+      },
+    ],
+  })
+</script>
+
+<template>
+  <div>
+    
+    <section
+      id="hero"
+      class="bg-skin-fill sm:h-screen grid place-items-center -mt-1 sm:mt-0 hero-default"
+    >
+      <div
+        class="container mx-auto px-4 xl:px-0 flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-20"
+      >
+        <div class="w-full sm:w-6/12">
+          <h1 class="text-4xl sm:text-6xl font-bold xl:leading-[4rem] text-skin-base">
+            Nuxt 3 Tailwind
+          </h1>
+          <p class="text-xl mt-4 mb-14 text-skin-muted">
+            Nuxt 3 + Tailwind CSS for Starter kit
+          </p>
+          <div class="space-x-4">
+            <button class="text-2xl text-white px-4 py-3 bg-teal-700 rounded-lg">
+              Get Starte
+            </button>
+          </div>
+        </div>
+        <div class="w-full sm:w-6/12 flex justify-end p-6 sm:p-0">
+          <img loading="lazy" src="~/assets/images/speaker.jpg" alt="" class="w-auto rounded-lg animate-pulse">
+        </div>
+      </div>
+    </section>
+
+  </div>
+</template>
+
+<style scoped>
+
+animation: bounce 1s infinite;
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-5%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+</style>
+
+
+Step 16: เรียกใช้ Layout ที่ไฟล์ app.vue
+---
+<template>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
+</template>
+
+Step 17: สร้าง BlogGrid
+---
+npx nuxi add component Blog/Grid
+
+กำหนดโค้ดดังนี้
+---
+<script lang="ts" setup>
+defineProps<{
+  title: string;
+  excerpt?: string;
+  image?: string;
+  slug?: string;
+}>();
+</script>
+
+<template>
+  <div class="grid shadow-xl group overflow-hidden rounded">
+    <div
+      v-if="image"
+      class="grid__image h-[180px] w-full relative overflow-hidden"
+    >
+      <img
+        :src="image"
+        :alt="title"
+        class="absolute object-cover w-full h-full group-hover:scale-110 duration-300"
+      />
+    </div>
+    <div class="grid__content p-5">
+      <h3 class="grid__content-title text-xl font-semibold mb-2">
+        {{ title }}
+      </h3>
+      <p
+        v-if="excerpt"
+        class="grid__content-excerpt mb-2 text-sm text-clip overflow-hidden ..."
+      >
+        {{ excerpt }}
+      </p>
+      <NuxtLink
+        v-if="slug"
+        class="blog__readmore border-b-2 border-primary-500 inline-flex items-center"
+        :to="`/${slug}`"
+        >Read more
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-4 h-4 ml-1 group-hover:ml-2 duration-200"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"
+          />
+        </svg>
+      </NuxtLink>
+    </div>
+  </div>
+</template>
+
+Step 18: อัพเดทไฟล์ index.vue
+---
+
+<script lang="ts" setup>
+  useHead({
+    title: 'Home',
+    meta: [
+      { 
+        name: 'description', 
+        content: 'Home Nuxt 3, IT Genius Engineering' 
+      },
+      {
+        name: 'keywords',
+        content: 'Home, Nuxt 3, Learning Nuxt 3'
+      },
+    ],
+  })
+</script>
+
+<template>
+  <main>
+    <section class="bg-gray-100">
+        <div class="container mx-auto py-12 flex items-center flex-wrap">
+          <div
+            class="avatar relative h-[200px] w-[200px] rounded overflow-hidden mr-10 mb-5 sm:mb-0 shadow-xl"
+          >
+            <img
+              src="~/assets/images/smk.jpg"
+              alt="Samit Koyom"
+              class="absolute w-full h-full object-cover"
+            />
+          </div>
+          <div>
+            <h1 class="text-2xl font-bold">Hi, I am Samit</h1>
+            <p class="mt-3 hero__des mb-5">
+              I built Nuxt 3 Blog, for Learning. <br />In my free time code something for hobby.
+            </p>
+            <a
+              href="https://twitter.com/iamsamit"
+              class="bg-sky-500 hover:bg-primary-600 py-2 px-4 rounded text-white inline-flex items-center gap-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-twitter"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"
+                />
+              </svg>
+              Let's Connect</a
+            >
+          </div>
+        </div>
+    </section>
+
+    <!-- Blog Section Starts -->
+    <section class="container mx-auto">
+      <div class="container py-10">
+        <div class="grid sm:grid-cols-3 gap-10">
+          <BlogGrid
+            title="The Dark Truth About Baby Cereal"
+            image="https://www.itgenius.co.th/sandbox_api/flutter_news_api/wp-content/uploads/2021/06/little-girl-home-with-cart-vegetables_231056-89.jpg"
+            excerpt="Baby cereal was first introduced in the 1930s, which was when a monumental shift occurred away from real foods towards processed convenience foods. Previously known as pablum, mothers were advised to mix it into a bottle with breast milk for babies as young as six weeks old"
+            slug="https://www.itgenius.co.th/sandbox_api/flutter_news_api/the-dark-truth-about-baby-cereal/"
+          ></BlogGrid>
+
+          <BlogGrid
+            title="Best Baby Games: Birth to 18 Months"
+            image="https://www.itgenius.co.th/sandbox_api/flutter_news_api/wp-content/uploads/2021/06/little-boy-plays-with-colorful-pyramid-white-background-with-space-text_208700-1860.jpeg"
+            excerpt="Never Too Young for Fun</h2>\n\n\n\n<p>Something about the stuffed animal we dubbed “crinkle puppy” for its crinkly sound when squeezed left my daughter Emma, 3 months at the time, smiling each time I placed it in front of her. Maybe it was the contrasting colors that held Emma’s attention. It could have been the way I often “spoke” for the puppy, giving Emma an idea of what a real puppy would sound"
+            slug="https://www.itgenius.co.th/sandbox_api/flutter_news_api/best-baby-games-birth-to-18-months/"
+          ></BlogGrid>
+
+          <BlogGrid
+            title="Easy Tips for Grooming Your Newborn"
+            image="https://www.itgenius.co.th/sandbox_api/flutter_news_api/wp-content/uploads/2021/06/woman-brushing-young-girl-s-hair-while-sitting-near-window-woman-combing-her-3-year-old-daughter-s-hair_73762-537.jpg"
+            excerpt="Grooming a newborn can be a nerve-wracking experience, especially for first-time parents From caring for the umbilical cord to trimming tiny nails, parents have a lot to learn when it comes to keeping their little ones “baby fresh. Liz Drake, a clinical nurse specialist in the neonatal intensive care unit at CHOC Children"
+            slug="https://www.itgenius.co.th/sandbox_api/flutter_news_api/easy-tips-for-grooming-your-newborn/"
+          ></BlogGrid>
+
+          <BlogGrid
+            title="The Dark Truth About Baby Cereal"
+            image="https://www.itgenius.co.th/sandbox_api/flutter_news_api/wp-content/uploads/2021/06/little-girl-home-with-cart-vegetables_231056-89.jpg"
+            excerpt="Baby cereal was first introduced in the 1930s, which was when a monumental shift occurred away from real foods towards processed convenience foods. Previously known as pablum, mothers were advised to mix it into a bottle with breast milk for babies as young as six weeks old"
+            slug="https://www.itgenius.co.th/sandbox_api/flutter_news_api/the-dark-truth-about-baby-cereal/"
+          ></BlogGrid>
+
+          <BlogGrid
+            title="Best Baby Games: Birth to 18 Months"
+            image="https://www.itgenius.co.th/sandbox_api/flutter_news_api/wp-content/uploads/2021/06/little-boy-plays-with-colorful-pyramid-white-background-with-space-text_208700-1860.jpeg"
+            excerpt="Never Too Young for Fun</h2>\n\n\n\n<p>Something about the stuffed animal we dubbed “crinkle puppy” for its crinkly sound when squeezed left my daughter Emma, 3 months at the time, smiling each time I placed it in front of her. Maybe it was the contrasting colors that held Emma’s attention. It could have been the way I often “spoke” for the puppy, giving Emma an idea of what a real puppy would sound"
+            slug="https://www.itgenius.co.th/sandbox_api/flutter_news_api/best-baby-games-birth-to-18-months/"
+          ></BlogGrid>
+
+          <BlogGrid
+            title="Easy Tips for Grooming Your Newborn"
+            image="https://www.itgenius.co.th/sandbox_api/flutter_news_api/wp-content/uploads/2021/06/woman-brushing-young-girl-s-hair-while-sitting-near-window-woman-combing-her-3-year-old-daughter-s-hair_73762-537.jpg"
+            excerpt="Grooming a newborn can be a nerve-wracking experience, especially for first-time parents From caring for the umbilical cord to trimming tiny nails, parents have a lot to learn when it comes to keeping their little ones “baby fresh. Liz Drake, a clinical nurse specialist in the neonatal intensive care unit at CHOC Children"
+            slug="https://www.itgenius.co.th/sandbox_api/flutter_news_api/easy-tips-for-grooming-your-newborn/"
+          ></BlogGrid>
+        </div>
+      </div>
+    </section>
+    <!-- Blog Section Ends  -->
+  </main>
+</template>
+
+<style scoped>
+
+</style>
+
++++++++++++++++++++++++++++++++++
+| Day 2
+| Nuxt3 Tailwind CSS for scalable project
++++++++++++++++++++++++++++++++++
+
+Step 19: สร้าง page / categories, contact
+---
+npx nuxi add page categories/index
+
+เพิ่มโค้ดดังนี้
+---
+<script lang="ts" setup>
+useHead({
+  title: "Categories",
+  meta: [
+    {
+      name: "description",
+      content: "Categories",
+    },
+  ],
+});
+</script>
+
+<template>
+  <section class="py-10">
+    <div class="container mx-auto">
+      <div class="flex flex-wrap gap-5">
+
+        <NuxtLink
+          to="/categories/clean-code"
+          class="flex items-center justify-center py-2 px-4 rounded text-white shadow-md hover:shadow-lg duration-200 text-2xl uppercase bg-blue-600">
+          <span class="font-semibold">#CLEAN CODE</span>
+        </NuxtLink>
+
+        <NuxtLink
+          to="/categories/clean-code"
+          class="flex items-center justify-center py-2 px-4 rounded text-white shadow-md hover:shadow-lg duration-200 text-2xl uppercase bg-blue-600">
+          <span class="font-semibold">#JAVASCRIPT</span>
+        </NuxtLink>
+
+        <NuxtLink
+          to="/categories/clean-code"
+          class="flex items-center justify-center py-2 px-4 rounded text-white shadow-md hover:shadow-lg duration-200 text-2xl uppercase bg-blue-600">
+          <span class="font-semibold">#DEVOPS</span>
+        </NuxtLink>
+
+      </div>
+    </div>
+  </section>
+</template>
+
+
+npx nuxi add page contact
+
+เพิ่มโค้ดดังนี้
+---
+<script lang="ts" setup></script>
+
+<template>
+  <section class="bg-gray-100">
+    <div class="container mx-auto py-12 flex items-center flex-wrap">
+      <h1 class="text-2xl font-bold">Contact us</h1>
+      <p class="py-8">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odit atque eos reiciendis! Deserunt facere nemo doloribus quae tempore. Itaque non possimus soluta delectus alias consectetur adipisci libero minima nam explicabo!</p>
+    </div>
+  </section>
+</template>
+
+<style scoped>
+
+</style>
+
+Step 20: สร้าง .env.example และ .env
+---
+
+.env.example
+--
+# Use the url without trailing slash like https://example.com
+WP_URI=YOUR_WORDPRESS_WEBSITE_URL
+
+.evn
+---
+WP_URI=https://www.itgenius.co.th/sandbox_api/flutter_news_api
+
+
+Step 21:  config nuxt.config.ts
+---
+runtimeConfig: {
+        public: {
+            wpUri: process.env.WP_URI,
+        },
+},
+
+Step 22: สร้าง post.d.ts ไฟล์ไว้ในโฟลเดอร์ types
+---
+// define type of post for typescript wordpress rest api
+export interface Post {
+    id: number;
+    date: string;
+    title: {
+        rendered: string;
+    };
+    slug: string;
+    excerpt: {
+        rendered: string;
+    };
+    link: string;
+    author: number;
+    _embedded: any;
+    content: {
+        rendered: string;
+    };
+}
+
+Step 23: สร้าง useWpApi.ts Composables
+---
+/**
+ * WordPress Composables
+ * A collection of composable functions for WordPress.
+ */
+
+import { Post } from '~~/types/post';
+
+export default () => {
+
+    const config = useRuntimeConfig();
+    const WP_URL: string = config.wpUri;
+
+    const get = async <T>(endpoint: string) => {
+        return useFetch<T>(`${WP_URL}/wp-json/wp/v2/${endpoint}`);
+    }
+
+    // Get all posts
+    const getPosts = async (
+        category?: number,
+        page: number = 1,
+        perPgae: number = 20,
+        fields: string = 'author,id,excerpt,title,link,slug,date',
+    ) => {
+        let query: string = `posts?page=${page}&per_page=${perPgae}&_embed=1`;
+        if (category) {
+            query += `&categories=${category}`;
+        }
+        return get<Post[]>(query);
+    }
+
+    // Get a single post
+    const getPost = async (slug: string) => {
+        return get<Post[]>(`posts?slug=${slug}&_embed=1`);
+    }
+
+    // get all categories
+    const getCatgories = async (fields: string = "name,slug,count") => {
+        return get<any>(`categories`);
+    }
+
+    // get a single category
+    const getCategory = async (slug: string) => {
+        return get<any>(`categories?slug=${slug}`);
+    }
+
+    return {
+        get,
+        getPosts,
+        getPost,
+        getCatgories,
+        getCategory,
+    }
+
+}
+
+
+Step 23: Read blog post from api at index.vue
+---
+import useWpApi from '~~/composables/useWpApi';
+
+const { data: blogs, refresh, error } = await useWpApi().getPosts();
+
+<BlogGrid
+            v-for="blog in blogs"
+            :key="blog.id"
+            :title="blog.title.rendered"
+            :image="blog._embedded['wp:featuredmedia'][0]?.source_url"
+            :excerpt="blog.excerpt.rendered"
+            :slug="blog.slug"
+          ></BlogGrid>
+
+Step 24: Read blog Detail create [slug].vue
+---
+<script setup lang="ts">
+
+const params = useRoute().params;
+const { data: posts } = await useWpApi().getPost(params.slug as string);
+const post = posts.value?.[0];
+
+useHead({
+  title: post?.title.rendered,
+  meta: [
+    {
+      name: "description",
+      content: `${post?.excerpt.rendered}`,
+    },
+  ],
+});
+
+</script>
+
+<template>
+   <section class="container mx-auto py-10 sm:py-16">
+        <div v-if="post" class="sm:px-20">
+            <!-- Blog Title -->
+            <h1 class="text-3xl font-bold mb-5 text-center leading-snug" v-html="post.title.rendered"></h1>
+            <!-- Blog Meta -->
+            <div class="flex mb-10 justify-center gap-5">
+                <span
+                >Written by:
+                <span class="text-primary-500">{{
+                    post._embedded["author"][0]?.name
+                }}</span></span
+                >
+
+                <span
+                >Published on:
+                <span class="text-primary-500">{{ post.date }}</span></span
+                >
+            </div>
+            <!-- Blog Image -->
+            <div
+                class="blog__image h-[250px] sm:h-[500px] w-full rounded shadow-xl relative overflow-hidden mb-12"
+            >
+                <img
+                :src="post._embedded['wp:featuredmedia'][0]?.source_url"
+                :alt="post.title.rendered"
+                class="absolute w-full h-full object-cover"
+                />
+            </div>
+            <!-- Blog Content -->
+            <div class="blog__content" v-html="post.content.rendered"></div>
+        </div>
+    </section>
+</template>
+
+<style>
+.blog__content {
+  @apply sm:px-10;
+}
+.blog__content h1,
+.blog__content h2,
+.blog__content h3,
+.blog__content h4,
+.blog__content h5,
+.blog__content h6,
+.blog__content p {
+  @apply my-5;
+}
+.blog__content h1,
+.blog__content h2,
+.blog__content h3,
+.blog__content h4,
+.blog__content h5,
+.blog__content h6 {
+  @apply font-bold;
+}
+
+.blog__content h1 {
+  @apply text-2xl sm:text-4xl;
+}
+
+.blog__content h2 {
+  @apply text-xl sm:text-3xl;
+}
+
+.blog__content h3 {
+  @apply text-lg sm:text-2xl;
+}
+
+.blog__content h4 {
+  @apply sm:text-xl;
+}
+
+.blog__content h5 {
+  @apply text-sm sm:text-lg;
+}
+</style>
+
+Step 25: เรียก api หน้า category/index.vue
+---
+<script lang="ts" setup>
+
+useHead({
+  title: "Categories",
+  meta: [
+    {
+      name: "description",
+      content: "Categories",
+    },
+  ],
+});
+
+const { data: categories } = await useWpApi().getCategories();
+
+</script>
+
+<template>
+  <section class="py-10">
+    <div class="container mx-auto">
+      <div class="flex flex-wrap gap-5">
+
+        <NuxtLink
+          v-for="category in categories"
+          :key="(category as any).id"
+          :to="`/categories/${(category as any).slug}`"
+          class="flex items-center justify-center py-2 px-4 rounded text-white shadow-md hover:shadow-lg duration-200 text-2xl uppercase bg-blue-600">
+          <span class="font-semibold">#{{ (category as any).name }}</span>
+        </NuxtLink>
+
+      </div>
+    </div>
+  </section>
+</template>
+
+
+Step 26: สร้างหน้าดึง blog by category ในไฟล์ categories/[slug].vue
+---
+<script setup lang="ts">
+    const params = useRoute().params;
+
+    const { data: categories } = await useWpApi().getCategory(params.slug as string);
+
+    const category = categories.value[0];
+
+    const { data: posts, error: postsError } = await useWpApi().getPosts(
+        category.id
+    );
+
+    useHead({
+        title: `Archive: ${category.name}`,
+        meta: [
+            {
+                name: "description",
+                content: `Category ${params.slug}`,
+            },
+        ],
+    });
+
+
+
+</script>
+
+<template>
+    <section class="py-10">
+        <div class="container mx-auto">
+            <div class="grid sm:grid-cols-3 gap-10">
+                <BlogGrid
+                v-for="post in posts"
+                :key="post.id"
+                :title="post.title.rendered"
+                :image="post._embedded['wp:featuredmedia'][0]?.source_url"
+                :excerpt="post.excerpt.rendered"
+                :slug="post.slug"
+                ></BlogGrid>
+            </div>
+        </div>
+    </section>
+</template>
+
+
+<style scoped>
+
+</style>
+
+Step 27: ตกแต่งสีสันความสวยงามให้ category
+---
+สร้างไฟล์ utils/colorGenerator.ts
+---
+export default function (): string {
+    const colors = [
+      "#FFC107",
+      "#F44336",
+      "#03A9F4",
+      "#2196F3",
+      "#4CAF50",
+      "#FF9800",
+      "#9C27B0",
+      "#E91E63",
+      "#009688",
+      "#3F51B5",
+      "#eab308",
+      "#b91c1c",
+      "#292524",
+      "#0d6efd",
+      "#6610f2",
+      "#6f42c1",
+      "#d63384",
+      "#dc3545",
+      "#fd7e14",
+      "#ffc107",
+      "#28a745",
+      "#20c997",
+    ];
+  
+    return colors[Math.floor(Math.random() * colors.length)];
+}  
+
+Step 28: กำหนดสีพื้นหลัง category
+---
+ <NuxtLink
+          v-for="category in categories"
+          :key="(category as any).id"
+          :to="`/categories/${(category as any).slug}`"
+          class="flex items-center justify-center py-2 px-4 rounded text-white shadow-md hover:shadow-lg duration-200 text-2xl uppercase" :style="{ backgroundColor: colorGenerator() }">
+          <span class="font-semibold">#{{ (category as any).name }}</span>
+        </NuxtLink>
+
+Step 29: push code ขึ้น github
+---
+https://github.com/iamsamitdev/nuxt3-scalable-tailwind-class-vercel
+
+Step 30: Deployed on vercel
+---
+https://vercel.com/dashboard
+
+ตัวอย่าง workshop ที่เผยแพร่แล้ว
+----
+https://nuxt3-scalable-tailwind-vercel.vercel.app/
+
+
+
